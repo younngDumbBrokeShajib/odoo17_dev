@@ -1,0 +1,19 @@
+<odoo>
+    <data>
+        <!-- Inherit the stock.picking.form view -->
+        <record id="view_stock_picking_form_inherit" model="ir.ui.view">
+            <field name="name">stock.picking.form.inherit</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <!-- Add fields after the Source Location field -->
+                <xpath expr="//field[@name='location_id']" position="after">
+                    <field name="buyer_order_no"/>
+                    <field name="buyer_order_date"/>
+                    <field name="dispatch_doc"/>
+                    <field name="dispatch_through"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

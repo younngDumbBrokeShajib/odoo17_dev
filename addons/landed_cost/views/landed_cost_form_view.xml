@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="action_landed_cost" model="ir.actions.act_window">
+        <field name="name">Landed Cost</field>
+        <field name="res_model">dev.landed.cost</field>
+        <field name="view_mode">tree,form</field>
+        <!-- <field name="view_id" ref="view_landed_cost_list"/>  Ensure this matches your tree view -->
+        <field name="target">current</field>
+    </record>
+    <!-- Top-level menu -->
+    <menuitem id="landed_cost_root_menu" action="action_landed_cost" name="Landed Cost Root" sequence="10"/>
+
+    <!-- Sub-menu under the top-level menu -->
+    <menuitem id="landed_cost_sub_menu" name="Landed Costs" parent="landed_cost_root_menu" sequence="10"/>
+
+    <!-- Menu to start the action -->
+      <!-- <menuitem id="landed_cost_menu" name="Manage Landed Costs" action="action_landed_cost" parent="landed_cost_sub_menu" sequence="10"/> -->
+
+    <!-- Form View -->
+    <record id="view_landed_cost_form" model="ir.ui.view">
+        <field name="name">dev.landed.cost.form.view</field>
+        <field name="model">dev.landed.cost</field>
+        <field name="arch" type="xml">
+            <form string="Landed Cost Form">
+                <sheet>
+                <group>
+                   <!-- <group> --> <!-- first column-->
+                   <field name="product_id"/>
+                   <field name="custom_hs_code"/>
+
+                    <field name="hs_code"/>
+                    <field name="vendor_id"/>
+                    <!--<field name="po_id" readonly="1"/> -->
+                    <field name="import_qty"/>
+
+
+                    <field name="lc_margin_percent"/>
+                    <field name="lc_reference"/>
+                        <field name="inv_value"/>
+                        <field name="inv_value_pkg"/>
+                        <field name="con_rate"/>
+                        <field name="cob"/>
+                        <field name="crf_val_psi"/>
+                        <!-- <field name="con_rate"/> -->
+
+                        <field name="inv_value_BDT"/>
+                        <field name="currency_id"/>
+
+                         <!-- <field name="con_rate"/> -->
+                        <field name="inv_value_BDT_pkg"/>
+                        <field name="insurance_premium_bdt"/>
+                        <!-- <field name="insurance_premium_precent"/> -->
+                         <field name="cif_value_imported_cost"/>
+                        <field name="custom_assessable_value_bdt"/>
+
+                        <field name="cd_landed"/>
+                        <field name="sd_landed"/>
+                        <field name="rd_landed"/>
+                        <field name="vat_landed"/>
+                        <field name="ait_landed"/>
+                        <field name="at_landed"/>
+                        <field name="DSC"/>
+                        <field name="atv"/>
+                        <field name="duties_taxes"/>
+                        <field name="doc_pros_fee"></field>
+                        <field name="VAT_c_f_agents"></field>
+                        <field name="others"></field>
+                        <field name="fine_penalties"></field>
+                        <field name="lcl_charges"></field>
+                        <field name="income_tax_c_f_comm"></field>
+                        <field name="tax_for_c_f_agent_jobs"></field>
+                        <field name="total_duties_taxes"></field>
+                        <field name="air_way_bill"></field>
+                        <field name="noc_charges"></field>
+                        <field name="shipping_charges"></field>
+                        <field name="import_handling_fee"></field>
+                        <field name="lift_charge"></field>
+                        <field name="storage_charge"></field>
+                        <field name="dg_charge"></field>
+                        <field name="port_dues_charge"></field>
+                        <field name="ass_examination_expenses"></field>
+                        <field name="labour_expenses"></field>
+                        <field name="chemical_test_avoid"></field>
+                        <field name="c_f_agent_comm"></field>
+                        <field name="local_transport_charge"></field>
+                        <field name="clear_forwar_exp"></field>
+                        <field name="lc_related_charges"></field>
+                        <field name="vat_lc_comm"></field>
+                        <field name="bank_process_fee"></field>
+                        <field name="cable_charges"></field>
+                        <field name="insurance_payorder_charge"></field>
+                        <field name="misc_charges"></field>
+                        <field name="stamp_charges"></field>
+                        <field name="credit_report_charges"></field>
+                        <field name="final_doc_procc_fee"></field>
+                        <field name="bank_service_fee"></field>
+                        <field name="total_inland_cost"></field>
+                        <field name="gross_cost_to_warehouse"></field>
+                        <field name="vat_tobe_adjust"></field>
+                        <field name="ait_tobe_adjust"></field>
+                        <field name="net_cost_to_warehouse"></field>
+                        <field name="net_cost_per_kg"></field>
+                        <field name="gross_cost_per_kg"></field>
+                        <field name="pur_mushok1_vat_price_dec"></field>
+                        <field name="vat_tobe_adjust_output_per_kg"></field>
+                        <field name="floor_price_without_vat"></field>
+                        <field name="min_price_cover_import_vat"></field>
+
+
+                <!-- </group> -->
+                   <!-- second column -->
+
+
+                    </group>
+
+                    <!-- Status and Button -->
+<group>
+                    <div class="oe_button_box" name="button_box" position="inside">
+                        <button name="action_create_journal_entry" string="Create Journal Entry" type="object" class="btn-primary" icon="fa-pencil-square-o"/>
+                        <br/>
+                        <br/>
+
+                        <button name="action_create_po" string="Create PO" type="object" class="btn-primary" icon="fa-cart-arrow-down"/>
+                    </div>
+
+                    <!-- Status message -->
+
+                </group>
+
+                </sheet>
+
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_landed_cost_list" model="ir.ui.view">
+        <field name="name">dev.landed.cost.list.view</field>
+        <field name="model">dev.landed.cost</field>
+        <field name="arch" type="xml">
+            <tree string="Landed Cost List">
+                <field name="hs_code"/>
+                <field name="import_qty"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Windows action to open form view -->
+</odoo>

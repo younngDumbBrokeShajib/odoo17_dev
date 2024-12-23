@@ -1,0 +1,323 @@
+<odoo>
+    <!-- Report Template -->
+
+    <template id="landed_cost_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                 <!-- <t t-call="web.external_layout"> -->
+                    <div class="page">
+                        <style>
+                            .page{
+                            font-size:8px;
+                            margin:5px;
+                            padding:5px;
+                            }
+                             table {
+        width: 100%;  <!-- Ensures the table occupies full width -->
+        table-layout: fixed;  <!-- Prevents auto-sizing of columns -->
+    }
+    th, td {
+        padding: 2px;  <!-- Reduces padding inside cells -->
+        word-wrap: break-word;  <!-- Ensures text wraps within the cell -->
+    }
+
+
+                        </style>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Value</th>
+                                   <!-- <th>% of Actual Invoice Value</th> THIS IS FOR 3RD COLUMN-->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Product</td>
+                                    <td><span t-esc="doc.product_name"/></td>
+                                </tr>
+                                <tr>
+                                    <td>HS Code</td>
+                                    <td><span t-esc="doc.hs_code"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Quantity Imported (KG)</td>
+                                    <td><span t-esc="doc.import_qty"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Commercial Invoice Value (CPT) in US $</td>
+                                    <td><span t-esc="doc.inv_value"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Commercial Invoice Value (CPT) per Kg in $</td>
+                                    <td><span t-esc="doc.inv_value_pkg"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Carriage on Board (Quality wise allocated) BDT</td>
+                                    <td><span t-esc="doc.cob"/></td>
+                                </tr>
+                                <tr>
+                                    <td>CRF Value by PSI Company per Kg in US $</td>
+                                    <td><span t-esc="doc.crf_val_psi"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Commercial Invoice Value In BDT</td>
+                                    <td><span t-esc="doc.inv_value_BDT"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Conversion Rate</td>
+                                    <td><span t-esc="doc.con_rate"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Commercial Invoice Value in BDT per KG</td>
+                                    <td><span t-esc="doc.inv_value_BDT_pkg"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Insurance Premium BDT</td>
+                                    <td><span t-esc="doc.insurance_premium_bdt"/></td>
+
+                                </tr>
+                                <tr>
+                                    <td>CIF Value of Imported Cost</td>
+                                    <td><span t-esc="doc.cif_value_imported_cost"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Custom Assessable Value in BDT</td>
+                                    <td><span t-esc="doc.custom_assessable_value_bdt"/></td>
+
+                                </tr>
+                                <tr>
+                                    <td>Custom Duty (CD)</td>
+                                    <td><span t-esc="doc.custom_duty"/></td>
+
+                                </tr>
+                                <tr>
+                                    <td>Custom Duty(CD)</td>
+                                    <td><span t-esc="doc.cd_landed"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Supplementary Duty(SD)</td>
+                                    <td><span t-esc="doc.sd_landed"/></td>
+                                </tr>
+
+                                <tr>
+                                    <td>Regulatory Duty(RD)</td>
+                                    <td><span t-esc="doc.rd_landed"/></td>
+                                </tr>
+
+                                <tr>
+                                    <td>Value Added Tax(VAT)</td>
+                                    <td><span t-esc="doc.vat_landed"/></td>
+                                </tr>
+
+                                <tr>
+                                    <td>Advance Landed Tax(AIT )</td>
+                                    <td><span t-esc="doc.ait_landed"/></td>
+                                </tr>
+
+                                <tr>
+                                    <td>Advance Tax</td>
+                                    <td><span t-esc="doc.at_landed"/></td>
+                                </tr>
+
+                                <tr>
+                                    <td>Development Subcharges</td>
+                                    <td><span t-esc="doc.DSC"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Advance Trade Tax(ATV)</td>
+                                    <td><span t-esc="doc.atv"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Duties and Taxes</td>
+                                    <td><span t-esc="doc.duties_taxes"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Document Processing Fee</td>
+                                    <td><span t-esc="doc.doc_pros_fee"/></td>
+                                </tr>
+                                <tr>
+                                    <td>VAT on C and F Agent</td>
+                                    <td><span t-esc="doc.VAT_c_f_agents"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Others</td>
+                                    <td><span t-esc="doc.others"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Fine and Pelanties</td>
+                                    <td><span t-esc="doc.fine_penalties"/></td>
+                                </tr>
+                                <tr>
+                                    <td>LCL Charges</td>
+                                    <td><span t-esc="doc.lcl_charges"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Income Tax on C and F agents</td>
+                                    <td><span t-esc="doc.income_tax_c_f_comm"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Add. Taxes for C and F agent jobs</td>
+                                    <td><span t-esc="doc.tax_for_c_f_agent_jobs"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Total Duties and Taxes</td>
+                                    <td><span t-esc="doc.total_duties_taxes"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Delivery Order Charges/Airway Bill collection</td>
+                                    <td><span t-esc="doc.air_way_bill"/></td>
+                                </tr>
+                                <tr>
+                                    <td>NOC and Demirrage Charges</td>
+                                    <td><span t-esc="doc.noc_charges"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Shipping Charges</td>
+                                    <td><span t-esc="doc.shipping_charges"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Import Handling Fee</td>
+                                    <td><span t-esc="doc.import_handling_fee"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Fork Lift Charges</td>
+                                    <td><span t-esc="doc.lift_charge"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Storage Charge</td>
+                                    <td><span t-esc="doc.storage_charge"/></td>
+                                </tr>
+                                <tr>
+                                    <td>DG Charge</td>
+                                    <td><span t-esc="doc.dg_charge"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Port Dues and Charges</td>
+                                    <td><span t-esc="doc.port_dues_charge"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Assessment/Examination Expenses</td>
+                                    <td><span t-esc="doc.ass_examination_expenses"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Delivery Expenses/Labour Expenses</td>
+                                    <td><span t-esc="doc.labour_expenses"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Chemical Test Avoidance</td>
+                                    <td><span t-esc="doc.chemical_test_avoid"/></td>
+                                </tr>
+                                <tr>
+                                    <td>C F Agent Commission</td>
+                                    <td><span t-esc="doc.c_f_agent_comm"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Local Transport Charge To Warehouse</td>
+                                    <td><span t-esc="doc.local_transport_charge"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Clearing and Forwarding Expenses</td>
+                                    <td><span t-esc="doc.clear_forwar_exp"/></td>
+                                </tr>
+                                <tr>
+                                    <td>L/C Commission and L/C Related Charges</td>
+                                    <td><span t-esc="doc.lc_related_charges"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Bank Gurantee/ Processing Fee</td>
+                                    <td><span t-esc="doc.bank_process_fee"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Cable Charges (Office+Swift+VAT)</td>
+                                    <td><span t-esc="doc.cable_charges"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Insurance Payorder Charge</td>
+                                    <td><span t-esc="doc.insurance_payorder_charge"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Misc Charges</td>
+                                    <td><span t-esc="doc.misc_charges"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Stamp Charges and other Charges</td>
+                                    <td><span t-esc="doc.stamp_charges"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Credit Report Collection Charges</td>
+                                    <td><span t-esc="doc.credit_report_charges"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Final Documents Fee</td>
+                                    <td><span t-esc="doc.final_doc_procc_fee"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Bank Service Fee</td>
+                                    <td><span t-esc="doc.bank_service_fee"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Total Inland Cost incl. Insurance</td>
+                                    <td><span t-esc="doc.total_inland_cost"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Total Gross Landed Cost upto Warehouse</td>
+                                    <td><span t-esc="doc.gross_cost_to_warehouse"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Vat to be adjusted with output Vat on Scale</td>
+                                    <td><span t-esc="doc.vat_tobe_adjust"/></td>
+                                </tr>
+                                <tr>
+                                    <td>AIT to be adjusted with output Vat on Scale</td>
+                                    <td><span t-esc="doc.ait_tobe_adjust"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Total Net Landed Cost up to Warehouse</td>
+                                    <td><span t-esc="doc.net_cost_to_warehouse"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Total Net Landed Cost Per KG</td>
+                                    <td><span t-esc="doc.net_cost_per_kg"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Total Gross Landed Cost Per KG</td>
+                                    <td><span t-esc="doc.gross_cost_per_kg"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Purchase Price for Mushok 1 Vat Price Decleration</td>
+                                    <td><span t-esc="doc.pur_mushok1_vat_price_dec"/></td>
+                                </tr>
+                                <tr>
+                                    <td>VAT to be adjusted with Output VAT on Sale per KG</td>
+                                    <td><span t-esc="doc.vat_tobe_adjust_output_per_kg"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Floor Price for sale without VAT</td>
+                                    <td><span t-esc="doc.floor_price_without_vat"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Minimum Price without VAT to cover the import VAT</td>
+                                    <td><span t-esc="doc.min_price_cover_import_vat"/></td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+               <!-- </t> -->
+            </t>
+        </t>
+    </template>
+
+
+    <!-- Report Action -->
+    <record id="action_landed_cost_hello_world_report" model="ir.actions.report">
+        <field name="name">Landed Cost Report</field>
+        <field name="model">dev.landed.cost</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">landed_cost.landed_cost_report</field>
+        <field name="report_file">landed_cost.landed_cost_report</field>
+        <field name="binding_model_id" ref="landed_cost.model_dev_landed_cost"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

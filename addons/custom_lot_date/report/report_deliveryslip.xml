@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <odoo>
+    <template id="report_deliveryslip_document_inherit" inherit_id="stock.report_delivery_document">
+        <xpath expr="//div[hasclass('page')]" position="inside">
+            <div class="row mt32 mb32">
+                <div class="col-12">
+
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Manufacturing Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="o.move_line_ids.filtered(lambda l: l.lot_id)" t-as="line">
+                                <tr>
+                                    <td><span t-field="line.description_picking"/></td>
+                                    <td><span t-field="line.lot_id.mfgdate"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo> -->
+
+
+<odoo>
+    <template id="report_deliveryslip_document_inherit" inherit_id="stock.report_delivery_document">
+        <xpath expr="//table[@class='table table-sm']" position="inside">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Delivered Quantity</th>
+                    <th>Test Column</th>
+                </tr>
+            </thead>
+            <tbody>
+                <t t-foreach="o.move_line_ids" t-as="line">
+                    <tr>
+                        <td><span t-field="line.product_id.display_name"/></td>
+                        <td><span t-field="line.qty_done"/></td>
+                        <td>Test Value</td>
+                    </tr>
+                </t>
+            </tbody>
+        </xpath>
+    </template>
+</odoo>
