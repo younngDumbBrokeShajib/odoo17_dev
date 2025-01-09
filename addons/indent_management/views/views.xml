@@ -1,0 +1,114 @@
+<odoo>
+  <data>
+    <!-- Action -->
+    <record id="action_indent_management" model="ir.actions.act_window">
+        <field name="name">Indent Management</field>
+        <field name="res_model">indent.management</field>
+        <field name="view_mode">tree,form</field>
+        <field name="target">current</field>
+    </record>
+
+    <!-- Menu Items -->
+    <menuitem id="indent_management_root_menu" action="action_indent_management" name="Indent Management" sequence="10"/>
+    <menuitem id="indent_management_sub_menu" name="Indents" parent="indent_management_root_menu" sequence="10"/>
+
+    <!-- Form View -->
+    <record id="view_indent_management_form" model="ir.ui.view">
+      <field name="name">indent.management.form.view</field>
+      <field name="model">indent.management</field>
+      <field name="arch" type="xml">
+        <form string="Indent Management Form">
+            <header>
+                <button string="Create PO" type="object" name="action_create_po" class="btn-primary"/>
+                <field name="stats" widget="statusbar" options="{'clickable':'1'}" ></field>
+            </header>
+            <sheet>
+                <group>
+                    <field name="name"/>
+                    <field name="value"/>
+                    <field name="supplier_id"/>
+                    <field name="customer_id"/>
+                </group>
+                <!-- Product Lines -->
+                <group string="Products and PO">
+                    <group>
+                    <field name="purchase_order_id"/>
+                    </group>
+                    <group>
+                        <field name="po_status"/>
+                    </group>
+                        <field name="product_lines" widget="one2many_list" editable="bottom">
+                        <tree editable="bottom">
+                            <field name="product_id"/>
+                            <field name="pro_quantity"/>
+                            <field name="pro_unit_price"/>
+                            <field name="pro_subtotal"/>
+                            <!-- <field name="subtotal"/> -->
+                        </tree>
+                    </field>
+
+                </group>
+                <h1>Total Amount</h1>
+                    <h3>
+                    <field name="total_amount"/>
+                    </h3>
+
+                <group string="Sales Order">
+                <group>
+                    <field name="currency_id"/>
+                <field name="pi_date"/>
+                <field name="sales_num"/>
+                <field name="sales_person"/>
+                    </group>
+                    <group>
+                        <field name="lc_no"/>
+                        <field name="lc_date"/>
+                    </group>
+                </group>
+                <group string="Shipment Plan and Tracking">
+                   <group>
+                    <field name="shipment_plan"/>
+                    <field name="etd"/>
+                    <field name="eta"/>
+                    </group>
+                    <group>
+                       <field name="inv_month"/>
+                    <field name="com_inv_date"/>
+                    <field name="com_inv_no"/>
+                </group>
+                    </group>
+                <group string="Commision and Remarks">
+                    <group>
+                    <field name="val_com_inv"/>
+                    <field name="base_val"/>
+                    <field name="percent_comm"/>
+                    <h3>
+                       Total Commission
+                    </h3>
+                        <h3>
+                            <field name="total_comm"/>
+                        </h3>
+                        </group>
+
+                </group>
+            </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- List View -->
+    <record id="view_indent_management_list" model="ir.ui.view">
+      <field name="name">indent.management.list.view</field>
+      <field name="model">indent.management</field>
+      <field name="arch" type="xml">
+        <tree string="Indent Management List">
+            <field name="serial_number"/>
+            <field name="name"/>
+            <field name="supplier_id"/>
+            <field name="customer_id"/>
+            <field name="stats"/>
+        </tree>
+      </field>
+    </record>
+  </data>
+</odoo>

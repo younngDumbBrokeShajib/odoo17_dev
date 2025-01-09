@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="action_letter_of_credit" model="ir.actions.act_window">
+        <field name="name">Letter of Credit</field>
+        <field name="res_model">letter.of.credit</field>
+        <field name="view_mode">tree,form</field>
+        <!-- <field name="view_id" ref="view_landed_cost_list"/>  Ensure this matches your tree view -->
+        <field name="target">current</field>
+    </record>
+    <!-- Top-level menu -->
+    <menuitem id="letter_of_credit_root_menu" action="action_letter_of_credit" name="Letter of Credit" sequence="10"/>
+
+    <!-- Sub-menu under the top-level menu -->
+    <menuitem id="letter_of_credit_sub_menu" name="Letter of Credit" parent="letter_of_credit_root_menu" sequence="10"/>
+
+    <!-- Menu to start the action -->
+      <!-- <menuitem id="landed_cost_menu" name="Manage Landed Costs" action="action_landed_cost" parent="landed_cost_sub_menu" sequence="10"/> -->
+
+    <!-- Form View -->
+<record id="view_letter_of_credit_form" model="ir.ui.view">
+    <field name="name">letter.of.credit.form.view</field>
+        <field name="model">letter.of.credit</field>
+        <field name="arch" type="xml"/>
+                <form string="Letter of Credit Form">
+                    <sheet>
+                        <group>
+                            <field name="product_ids"/>
+                        </group>
+                    </sheet>
+                </form>
+
+</record>
+
+    <!-- Tree View -->
+    <record id="view_letter_of_credit_list" model="ir.ui.view">
+        <field name="name">letter.of.credit.list.view</field>
+        <field name="model">letter.of.credit</field>
+        <field name="arch" type="xml">
+            <tree string="Letter of Credit List">
+                <field name="hs_code"/>
+
+            </tree>
+        </field>
+    </record>
+
+    <!-- Windows action to open form view -->
+</odoo>

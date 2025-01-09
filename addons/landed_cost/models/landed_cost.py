@@ -7,6 +7,8 @@ class LandedCost(models.Model):
     product_id=fields.Many2one('product.product','Product')
     # use product.product for the actual product variant used in transactions like sales and purchases
     product_id_template=fields.Many2one('product.template','product_template')
+    #product.template is used to get all other information saved in template
+    #then we use this product.template saved in another varr to get name, hs_code or anyother inforamtion to use
     product_name=fields.Char('Product Name',related='product_id_template.name',store=True)
     custom_hs_code=fields.Char("BD Custom HS Code",related='product_id_template.hs_code',store=True)
     x_empty_field=fields.Char(string='N/A')
