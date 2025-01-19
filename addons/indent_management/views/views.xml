@@ -26,13 +26,17 @@
                 <group>
                     <field name="name"/>
                     <field name="value"/>
+                    <field name="indent_type"/>
                     <field name="supplier_id"/>
                     <field name="customer_id"/>
+                    <field name="sales_person"/>
                 </group>
                 <!-- Product Lines -->
                 <group string="Products and PO">
                     <group>
-                    <field name="purchase_order_id"/>
+                    <field name="purchase_order_id" invisible="1"/>
+                        <field name="purchase_order_no" readonly="1"/>
+                        <field name="purchase_order_date"/>
                     </group>
                     <group>
                         <field name="po_status"/>
@@ -56,12 +60,17 @@
                 <group string="Sales Order">
                 <group>
                     <field name="currency_id"/>
+                    <field name="pi_no"/>
                 <field name="pi_date"/>
                 <field name="sales_num"/>
-                <field name="sales_person"/>
                     </group>
                     <group>
-                        <field name="lc_no"/>
+
+                        <field name="lc_tt_cad_sel"/>
+                        <!-- conditional statements to show the selected field-->
+
+
+                        <field name="lc_tt_cad"/>
                         <field name="lc_date"/>
                     </group>
                 </group>
@@ -79,9 +88,11 @@
                     </group>
                 <group string="Commision and Remarks">
                     <group>
+                        <field name="type_comm"/>
                     <field name="val_com_inv"/>
                     <field name="base_val"/>
                     <field name="percent_comm"/>
+                        <field name="comm_input"/>
                     <h3>
                        Total Commission
                     </h3>
