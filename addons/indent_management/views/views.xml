@@ -4,7 +4,7 @@
     <record id="action_indent_management" model="ir.actions.act_window">
         <field name="name">Indent Management</field>
         <field name="res_model">indent.management</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,pivot</field>
         <field name="target">current</field>
     </record>
 
@@ -41,6 +41,7 @@
                     <group>
                         <field name="po_status"/>
                     </group>
+
                         <field name="product_lines" widget="one2many_list" editable="bottom">
                         <tree editable="bottom">
                             <field name="product_id"/>
@@ -50,12 +51,19 @@
                             <!-- <field name="subtotal"/> -->
                         </tree>
                     </field>
-
                 </group>
-                <h1>Total Amount</h1>
+                <group>
+                    <!-- this creates a new column on the left side -->
+                    <!-- this creates on the left side<h3>This is on left side make it on right side</h3> -->
+                <field name="purchase_order_id" invisible="1"/>
+                    <group>
+                    <!-- this creates a new column on the right side-->
+                    <h1>Total Amount</h1>
                     <h3>
                     <field name="total_amount"/>
                     </h3>
+                    </group>
+                </group>
 
                 <group string="Sales Order">
                 <group>
@@ -90,8 +98,8 @@
                     <group>
                         <field name="type_comm"/>
                     <field name="val_com_inv"/>
-                    <field name="base_val"/>
-                    <field name="percent_comm"/>
+                    <field name="base_val" readonly="type_comm=='percent'"/>
+                    <field name="percent_comm" readonly="type_comm== 'quantity'"/>
                         <field name="comm_input"/>
                     <h3>
                        Total Commission
@@ -121,5 +129,21 @@
         </tree>
       </field>
     </record>
+      <!-- Pivot View-->
+      <record id="view_indent_management_pivot" model="ir.ui.view">
+      <field name="name">indent.management.pivot</field>
+      <field name="model">indent.management</field>
+          <field name="priority" eval="2"/>
+      <field name="arch" type="xml">
+          <pivot string="Indent Management">
+              <field name="supplier_id" type="row" string="Supplier"/>
+              <field name="customer_id" type="col" string="Buyer"/>
+              <field name="total_comm" type="measure"/>
+          </pivot>
+
+      </field>
+    </record>
+
+
   </data>
 </odoo>
