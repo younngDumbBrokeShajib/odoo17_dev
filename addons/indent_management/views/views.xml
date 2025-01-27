@@ -29,14 +29,22 @@
                     <field name="indent_type"/>
                     <field name="supplier_id"/>
                     <field name="customer_id"/>
-                    <field name="sales_person"/>
                 </group>
+                    <group>
+                        <group>
+                        <field name="sales_person"/>
+                            </group>
+                        <group>
+                            <field name="pmd_owner"/>
+                            </group>
+                    </group>
+
                 <!-- Product Lines -->
                 <group string="Products and PO">
                     <group>
                     <field name="purchase_order_id" invisible="1"/>
                         <field name="purchase_order_no" readonly="1"/>
-                        <field name="purchase_order_date"/>
+
                     </group>
                     <group>
                         <field name="po_status"/>
@@ -46,24 +54,41 @@
                         <tree editable="bottom">
                             <field name="product_id"/>
                             <field name="pro_quantity"/>
+                            <field name="product_uom_category_id" invisible="1"/>
+                            <field name="uom_id"/>
                             <field name="pro_unit_price"/>
                             <field name="pro_subtotal"/>
                             <!-- <field name="subtotal"/> -->
                         </tree>
                     </field>
                 </group>
-                <group>
-                    <!-- this creates a new column on the left side -->
-                    <!-- this creates on the left side<h3>This is on left side make it on right side</h3> -->
-                <field name="purchase_order_id" invisible="1"/>
-                    <group>
-                    <!-- this creates a new column on the right side-->
-                    <h1>Total Amount</h1>
-                    <h3>
-                    <field name="total_amount"/>
-                    </h3>
-                    </group>
-                </group>
+                <!-- total amount column -->
+                <div class="clearfix" name="total_amount_summary">
+    <div id="total" class="row" name="total">
+        <!-- Placeholder columns for alignment -->
+        <div class="col"></div> <!-- Left column -->
+        <div class="col"></div> <!-- Middle column -->
+
+        <!-- Total Amount column -->
+        <div class="col-auto ms-auto">
+            <h1>Total Amount</h1>
+            <h3>
+                <field name="total_amount" readonly="1"/>
+            </h3>
+        </div>
+    </div>
+</div>
+<!--                <group>-->
+<!--                    &lt;!&ndash; this creates a new column on the left side &ndash;&gt;-->
+<!--                    &lt;!&ndash; this creates on the left side<h3>This is on left side make it on right side</h3> &ndash;&gt;-->
+<!--                    <group>-->
+<!--                    &lt;!&ndash; this creates a new column on the right side&ndash;&gt;-->
+<!--                    <h1>Total Amount</h1>-->
+<!--                    <h3>-->
+<!--                    <field name="total_amount"/>-->
+<!--                    </h3>-->
+<!--                    </group>-->
+<!--                </group>-->
 
                 <group string="Sales Order">
                 <group>
@@ -92,12 +117,12 @@
                        <field name="inv_month"/>
                     <field name="com_inv_date"/>
                     <field name="com_inv_no"/>
+                        <field name="val_com_inv"/>
                 </group>
                     </group>
                 <group string="Commision and Remarks">
                     <group>
                         <field name="type_comm"/>
-                    <field name="val_com_inv"/>
                     <field name="base_val" readonly="type_comm=='percent'"/>
                     <field name="percent_comm" readonly="type_comm== 'quantity'"/>
                         <field name="comm_input"/>
@@ -122,6 +147,7 @@
       <field name="arch" type="xml">
         <tree string="Indent Management List">
             <field name="serial_number"/>
+            <field name="purchase_order_no"/>
             <field name="name"/>
             <field name="supplier_id"/>
             <field name="customer_id"/>

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+from datetime import datetime
 
 
 
@@ -11,13 +12,15 @@ class indent_management(models.Model):
 
     serial_number = fields.Integer(string="Serial Number", compute="_compute_serial_number")
     name = fields.Char()
-    indent_type=fields.Selection([('exe','Exepients'),('api','API'),('neu','Neutra'),('own','Own Imports')],string='Indent Type',required=True)
-    supplier_id=fields.Many2one('res.partner','Supplier')
+    indent_type=fields.Selection([('exe','Excipient'),('api','API'),('neu','Nutraceutical'),('own','Own Imports')],string='Indent Type',required=True)
+    supplier_id=fields.Many2one('res.partner','Supplier',
+                                domain=[('category_id.name','=','Vendors')]
+                                )
     customer_id=fields.Many2one('res.partner','Customer')
     product_lines = fields.One2many('indent.product.line', 'indent_id', string="Products")
     purchase_order_id=fields.Many2one('purchase.order','Purchase Order Ref') #this OLD
     purchase_order_no=fields.Char(string='Purchase Order Number',readonly=True,copy=False)
-    purchase_order_date=fields.Date(string='Purchase order Date')
+    #purchase_order_date=fields.Date(string='Purchase order Date')
 
     #purchase_order_id_created=fields.Char(string='Purchase Order Id',compute='_generate_pruchase_order_id',store=True)
     po_status=fields.Char('Purchase order Status',readonly=True)
@@ -29,6 +32,7 @@ class indent_management(models.Model):
     pi_date=fields.Date(string='Proforma Invoice date')
     sales_num=fields.Char(string='Sales Order Number')
     sales_person=fields.Many2one('hr.employee','Salesperson')
+    pmd_owner=fields.Many2one('hr.employee',string='PMD Owner')
 
     lc_tt_cad_sel=fields.Selection([('lc','LC'),('tt','TT'),('cad','CAD')],string='Import Document',default='lc')
     lc_tt_cad=fields.Char(string='LC/TT/CAD NO:')
@@ -37,10 +41,13 @@ class indent_management(models.Model):
     shipment_plan=fields.Selection([('air','Air'),('sea','Sea')],string='Shipment Type') #not added
     etd=fields.Date(string='ETD')
     eta=fields.Date(string='ETA')
-    inv_month=fields.Date(string='Invoice Month')
+    inv_month=fields.Char(string='Invoice Month',readonly=True,store=True)
     com_inv_date=fields.Date(string='Commercial Invoice Date')
     com_inv_no=fields.Char(string='Commercial Invoice Number')
     stats=fields.Selection([('draft','Draft'),('confirmed','Confirmed'),('ongoing','Ongoing'),('ececuted','Executed'),('cancel','Cancel')],default='draft')
+    # fields for cancellation reason and date fields
+    cancel_reason=fields.Text(string='Cancellation Reason')
+    cancel_date =fields.Date(string='Cancellation Date')
     #commission calculation fields
     type_comm=fields.Selection([('quantity','Volume'),('percent','Percent'),('manual','Manual')],string='Type of Commission')
     val_com_inv=fields.Float(string='Value of Comm Invoice')
@@ -142,13 +149,26 @@ class indent_management(models.Model):
             'target': 'current',
         }
 
+#Calculate only Comm Inv Month and Year
+
+    @api.onchange('com_inv_date')
+    def _onchange_com_inv_date(self):
+        for record in self:
+            if record.com_inv_date:
+                date_obj = fields.Date.from_string(record.com_inv_date)
+                record.inv_month = date_obj.strftime('%B %Y')
+            else:
+                record.inv_month=''
+
+
+
 
 #     @api.depends('value')
 #     def _value_pc(self):
 #         for record in self:
 #             record.value2 = float(record.value) / 100
 
-
+#
 
 #15/Jan/2025
 #move value of comm inv value below the comm inv no

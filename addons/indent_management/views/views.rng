@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar ns="" xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+    <start>
+        <element name="odoo">
+            <element name="data">
+                <oneOrMore>
+                    <choice>
+                        <element name="menuitem">
+                            <optional>
+                                <attribute name="action">
+                                    <data type="NCName"/>
+                                </attribute>
+                            </optional>
+                            <attribute name="id">
+                                <data type="NCName"/>
+                            </attribute>
+                            <attribute name="name"/>
+                            <optional>
+                                <attribute name="parent">
+                                    <data type="NCName"/>
+                                </attribute>
+                            </optional>
+                            <attribute name="sequence">
+                                <data type="integer"/>
+                            </attribute>
+                        </element>
+                        <element name="record">
+                            <attribute name="id">
+                                <data type="NCName"/>
+                            </attribute>
+                            <attribute name="model">
+                                <data type="NCName"/>
+                            </attribute>
+                            <oneOrMore>
+                                <ref name="field"/>
+                            </oneOrMore>
+                        </element>
+                    </choice>
+                </oneOrMore>
+            </element>
+        </element>
+    </start>
+    <define name="field">
+        <element name="field">
+            <optional>
+                <attribute name="editable">
+                    <data type="NCName"/>
+                </attribute>
+            </optional>
+            <optional>
+                <attribute name="eval">
+                    <data type="integer"/>
+                </attribute>
+            </optional>
+            <optional>
+                <attribute name="invisible">
+                    <data type="integer"/>
+                </attribute>
+            </optional>
+            <attribute name="name">
+                <data type="NCName"/>
+            </attribute>
+            <optional>
+                <attribute name="options"/>
+            </optional>
+            <optional>
+                <attribute name="readonly"/>
+            </optional>
+            <optional>
+                <attribute name="string">
+                    <data type="NCName"/>
+                </attribute>
+            </optional>
+            <optional>
+                <attribute name="type">
+                    <data type="NCName"/>
+                </attribute>
+            </optional>
+            <optional>
+                <attribute name="widget">
+                    <data type="NCName"/>
+                </attribute>
+            </optional>
+            <oneOrMore>
+                <choice>
+                    <text/>
+                    <element name="form">
+                        <attribute name="string"/>
+                        <element name="header">
+                            <element name="button">
+                                <attribute name="class">
+                                    <data type="NCName"/>
+                                </attribute>
+                                <attribute name="name">
+                                    <data type="NCName"/>
+                                </attribute>
+                                <attribute name="string"/>
+                                <attribute name="type">
+                                    <data type="NCName"/>
+                                </attribute>
+                            </element>
+                            <ref name="field"/>
+                        </element>
+                        <element name="sheet">
+                            <oneOrMore>
+                                <choice>
+                                    <ref name="div"/>
+                                    <ref name="group"/>
+                                </choice>
+                            </oneOrMore>
+                        </element>
+                    </element>
+                    <element name="pivot">
+                        <attribute name="string"/>
+                        <oneOrMore>
+                            <ref name="field"/>
+                        </oneOrMore>
+                    </element>
+                    <element name="tree">
+                        <optional>
+                            <attribute name="editable">
+                                <data type="NCName"/>
+                            </attribute>
+                        </optional>
+                        <optional>
+                            <attribute name="string"/>
+                        </optional>
+                        <oneOrMore>
+                            <ref name="field"/>
+                        </oneOrMore>
+                    </element>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+    <define name="group">
+        <element name="group">
+            <optional>
+                <attribute name="string"/>
+            </optional>
+            <optional>
+                <ref name="group"/>
+            </optional>
+            <zeroOrMore>
+                <ref name="field"/>
+            </zeroOrMore>
+            <zeroOrMore>
+                <ref name="h3"/>
+            </zeroOrMore>
+        </element>
+    </define>
+    <define name="div">
+        <element name="div">
+            <attribute name="class"/>
+            <optional>
+                <attribute name="id">
+                    <data type="NCName"/>
+                </attribute>
+            </optional>
+            <optional>
+                <attribute name="name">
+                    <data type="NCName"/>
+                </attribute>
+            </optional>
+            <zeroOrMore>
+                <ref name="div"/>
+            </zeroOrMore>
+            <optional>
+                <element name="h1">
+                    <text/>
+                </element>
+                <ref name="h3"/>
+            </optional>
+        </element>
+    </define>
+    <define name="h3">
+        <element name="h3">
+            <oneOrMore>
+                <choice>
+                    <text/>
+                    <ref name="field"/>
+                </choice>
+            </oneOrMore>
+        </element>
+    </define>
+</grammar>

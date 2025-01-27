@@ -25,6 +25,7 @@ Long description of module's purpose
         'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
+        'views/cancel_wizard.xml',
 
     ],
     # only loaded in demonstration mode
