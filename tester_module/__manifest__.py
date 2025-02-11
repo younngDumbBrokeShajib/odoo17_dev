@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "indent_management",
+    'name': "tester_module",
 
     'summary': "Short (1 phrase/line) summary of the module's purpose",
 
@@ -18,22 +18,17 @@ Long description of module's purpose
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','purchase','stock','hr','mail','product','account'],
+    'depends': ['base'],
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
+        # 'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
-        'views/cancel_wizard.xml',
-        'views/pro_tem_indent.xml',
-
     ],
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
     ],
-    'installable':True,
-    'application':True,
 }
 

@@ -2,20 +2,22 @@
 
 from odoo import models, fields, api
 from datetime import datetime
+from odoo.exceptions import UserError
 
 
 
 class indent_management(models.Model):
 
     _name = 'indent.management'
+    _inherit = ['mail.thread']
     _description = 'indent_management'
 
     serial_number = fields.Integer(string="Serial Number", compute="_compute_serial_number")
     name = fields.Char()
     indent_type=fields.Selection([('exe','Excipient'),('api','API'),('neu','Nutraceutical'),('own','Own Imports')],string='Indent Type',required=True)
-    supplier_id=fields.Many2one('res.partner','Supplier',
-                                domain=[('category_id.name','=','Vendors')]
-                                )
+    supplier_id = fields.Many2one('res.partner', 'Supplier', required=True,
+                                  domain=[('category_id.name', '=', 'Vendors')]
+                                  )
     customer_id=fields.Many2one('res.partner','Customer')
     product_lines = fields.One2many('indent.product.line', 'indent_id', string="Products")
     purchase_order_id=fields.Many2one('purchase.order','Purchase Order Ref') #this OLD
@@ -55,7 +57,8 @@ class indent_management(models.Model):
     percent_comm=fields.Float(string='Percentage of commission')
     total_comm=fields.Float(string='Total Commission',compute='_compute_comm',store=True)
     comm_input=fields.Float(string='Commission Value to Register') #this field is required to for manual type of commission
-
+#journal Entry Fields
+    journal_entry_id = fields.Many2one('account.move', string="Journal Entry", readonly=True)
 
     #quantity_cal=fields.Boolean(string='Select The calculation type',compute="_compute_comm2")
 
@@ -160,7 +163,58 @@ class indent_management(models.Model):
             else:
                 record.inv_month=''
 
+    def action_create_journal_entry(self):
+        self.ensure_one()
+        if self.env['ir.config_parameter'].sudo().get_param('running_on_odoo_sh'):
+            receivable_code = '123201'
+            income_code = '421001'
+            journal_ref = '	__custom__.indent_journal'
 
+        else:
+            # Use default Odoo accounts on localhost
+            receivable_code = '101200'  # Default Accounts Receivable in Odoo Community
+            income_code = '701000'  # Generic Income Account
+            journal_ref = 'account.general_journal'
+
+        receivable_account = self.env['account.account'].search([('code', '=', receivable_code)], limit=1)
+        income_account = self.env['account.account'].search([('code', '=', income_code)], limit=1)
+
+        if not receivable_account or not income_account:
+            raise UserError("One or both accounts are missing. Please check your Chart of Accounts.")
+
+            # Create the journal entry
+            move_vals = {
+                'journal_id': self.env.ref('journal_ref').id,  # Ensure correct journal
+                'date': fields.Date.today(),
+                'ref': f"Commission-{self.purchase_order_id}",
+                'line_ids': [
+                    (0, 0, {
+                        'account_id': receivable_account.id,
+                        'partner_id': self.supplier_id.id,
+                        'debit': self.commission_amount,
+                        'credit': 0.0,
+                        'name': f"Commission Receivable - {self.supplier_id.name}",
+                    }),
+                    (0, 0, {
+                        'account_id': income_account.id,
+                        'partner_id': self.supplier_id.id,
+                        'debit': 0.0,
+                        'credit': self.commission_amount,
+                        'name': f"Commission Income - {self.supplier_id.name}",
+                    }),
+                ],
+            }
+
+            journal_entry = self.env['account.move'].create(move_vals)
+            self.journal_entry_id = journal_entry.id  # Store the created journal entry
+
+            return {
+                'type': 'ir.actions.act_window',
+                'res_model': 'account.move',
+                'res_id': journal_entry.id,
+                'view_mode': 'form',
+                'target': 'current',
+            }
 
 
 #     @api.depends('value')

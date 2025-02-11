@@ -1,27 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-  <data>
-    <!-- Action -->
-    <record id="action_indent_management" model="ir.actions.act_window">
-        <field name="name">Indent Management</field>
-        <field name="res_model">indent.management</field>
-        <field name="view_mode">tree,form,pivot</field>
-        <field name="target">current</field>
-    </record>
+    <data>
+        <!-- Action -->
+        <record id="action_indent_management" model="ir.actions.act_window">
+            <field name="name">Indent Management</field>
+            <field name="res_model">indent.management</field>
+            <field name="view_mode">tree,form,pivot</field>
+            <field name="target">current</field>
+        </record>
 
-    <!-- Menu Items -->
-    <menuitem id="indent_management_root_menu" action="action_indent_management" name="Indent Management" sequence="10"/>
-    <menuitem id="indent_management_sub_menu" name="Indents" parent="indent_management_root_menu" sequence="10"/>
+        <!-- Menu -->
+        <menuitem
+            id="menu_indent_management_root"
+            name="Indent Management"
+            sequence="10"/>
 
-    <!-- Form View -->
-    <record id="view_indent_management_form" model="ir.ui.view">
-      <field name="name">indent.management.form.view</field>
-      <field name="model">indent.management</field>
-      <field name="arch" type="xml">
-        <form string="Indent Management Form">
+        <menuitem
+            id="menu_indent_management"
+            name="Indents"
+            parent="menu_indent_management_root"
+            action="action_indent_management"
+            sequence="1"/>
+
+        <!-- Form View -->
+        <record id="view_indent_management_form" model="ir.ui.view">
+            <field name="name">indent.management.form</field>
+            <field name="model">indent.management</field>
+            <field name="arch" type="xml">
+               <form string="Indent Management Form">
             <header>
                 <button string="Create PO" type="object" name="action_create_po" class="btn-primary"/>
-                <field name="stats" widget="statusbar" options="{'clickable':'1'}" ></field>
-                  <button string="Create Journal Entry" type="object" name="action_create_journal_entry" class="btn"/>
+                <field name="stats" widget="statusbar" options="{'clickable': '1'}"/>
             </header>
             <sheet>
                 <group>
@@ -30,6 +39,14 @@
                     <field name="indent_type"/>
                     <field name="supplier_id"/>
                     <field name="customer_id"/>
+                    <!-- can_cancel used in button action -->
+                    <!-- it needs to be present in view so added here but invisible -->
+                    <field name="can_cancel" invisible="1"/>
+                    <field name="stats" invisible="1"/>
+                    <field name="readonly_comm" invisible="1"/>
+                    <field name="readonly_base_val" invisible="1"/>
+                    <field name="readonly_percent" invisible="1"/>
+
                 </group>
                     <group>
                         <group>
@@ -68,8 +85,8 @@
                 <div class="clearfix" name="total_amount_summary">
     <div id="total" class="row" name="total">
         <!-- Placeholder columns for alignment -->
-        <div class="col"></div> <!-- Left column -->
-        <div class="col"></div> <!-- Middle column -->
+        <div class="col"/> <!-- Left column -->
+        <div class="col"/> <!-- Middle column -->
 
         <!-- Total Amount column -->
         <div class="col-auto ms-auto">
@@ -125,9 +142,9 @@
                 <group string="Commision and Remarks">
                     <group>
                         <field name="type_comm"/>
-                    <field name="base_val" readonly="type_comm=='percent'"/>
-                    <field name="percent_comm" readonly="type_comm== 'quantity'"/>
-                        <field name="comm_input"/>
+                    <field name="base_val" readonly=" readonly_base_val == 'True'"/>
+                    <field name="percent_comm" readonly=" readonly_percent == 'True'"/>
+                        <field name="comm_input" readonly="readonly_comm == True "/>
                     <h3>
                        Total Commission
                     </h3>
@@ -143,41 +160,37 @@
                 <field name="message_follower_ids"/>
                 <field name="message_ids"/>
             </div>
-
         </form>
-      </field>
-    </record>
+            </field>
+        </record>
 
-    <!-- List View -->
-    <record id="view_indent_management_list" model="ir.ui.view">
-      <field name="name">indent.management.list.view</field>
-      <field name="model">indent.management</field>
-      <field name="arch" type="xml">
-        <tree string="Indent Management List">
-            <field name="serial_number"/>
-            <field name="purchase_order_no"/>
-            <field name="name"/>
-            <field name="supplier_id"/>
-            <field name="customer_id"/>
-            <field name="stats"/>
-        </tree>
-      </field>
-    </record>
-      <!-- Pivot View-->
-      <record id="view_indent_management_pivot" model="ir.ui.view">
-      <field name="name">indent.management.pivot</field>
-      <field name="model">indent.management</field>
-          <field name="priority" eval="2"/>
-      <field name="arch" type="xml">
-          <pivot string="Indent Management">
-              <field name="supplier_id" type="row" string="Supplier"/>
-              <field name="customer_id" type="col" string="Buyer"/>
-              <field name="total_comm" type="measure"/>
-          </pivot>
+        <!-- Tree View -->
+        <record id="view_indent_management_tree" model="ir.ui.view">
+            <field name="name">indent.management.tree</field>
+            <field name="model">indent.management</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="serial_number"/>
+                    <field name="purchase_order_no"/>
+                    <field name="name"/>
+                    <field name="supplier_id"/>
+                    <field name="customer_id"/>
+                    <field name="stats"/>
+                </tree>
+            </field>
+        </record>
 
-      </field>
-    </record>
-
-
-  </data>
+        <!-- Pivot View -->
+        <record id="view_indent_management_pivot" model="ir.ui.view">
+            <field name="name">indent.management.pivot</field>
+            <field name="model">indent.management</field>
+            <field name="arch" type="xml">
+                <pivot>
+                    <field name="supplier_id" type="row"/>
+                    <field name="customer_id" type="col"/>
+                    <field name="total_comm" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+    </data>
 </odoo>

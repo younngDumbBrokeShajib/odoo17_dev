@@ -1,0 +1,20 @@
+<!--<button string="Cancel" type="action" name="%(action_confirm_cancel)d" invisible='can_cancel' class="btn-danger"/>-->
+
+<!-- <record id="action_cancel_reason_wizard" model="ir.actions.act_window">
+    <field name="name">Cancel Indent</field>
+    <field name="res_model">cancel.reason.wizard</field>
+    <field name="view_mode">form</field>
+    <field name="view_id" ref="view_cancel_reason_wizard_form"/>
+    <field name="target">new</field>
+</record>-->
+
+
+<!--readonly=" 'readonly_base_val','==','True'"-->
+<!--readonly=" 'readonly_percent','==','True'"-->
+<!--readonly=" 'readonly_comm','==' ,'True' " -->
+
+
+ <div class="oe_chatter">
+                <field name="message_follower_ids"/>
+                <field name="message_ids"/>
+            </div>
