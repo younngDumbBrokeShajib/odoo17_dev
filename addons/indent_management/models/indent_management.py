@@ -172,9 +172,7 @@ class indent_management(models.Model):
 
     def action_create_journal_entry(self):
         self.ensure_one()
-        for rec in self:
-            if rec.comm_ache is False:
-                raise UserError('please fix the commission amount first')
+
     #    if self.env['ir.config_parameter'].sudo().get_param('running_on_odoo_sh'):
     #        receivable_code = '123201'
     #        income_code = '421001'
@@ -192,8 +190,8 @@ class indent_management(models.Model):
         receivable_account = self.env['account.account'].search([('code', '=', receivable_acc_code)], limit=1)
         income_account = self.env['account.account'].search([('code', '=', income_acc_code)], limit=1)
 
-        if not receivable_account or not income_account:
-            raise UserError("One or both accounts are missing. Please check your Chart of Accounts.")
+        #if not receivable_account or not income_account:
+        #    raise UserError("One or both accounts are missing. Please check your Chart of Accounts.")
 
             # Create the journal entry
             move_vals = {
