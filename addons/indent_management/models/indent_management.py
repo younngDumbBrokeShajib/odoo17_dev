@@ -56,8 +56,9 @@ class indent_management(models.Model):
     base_val=fields.Float(string="Base Value")
     percent_comm=fields.Float(string='Percentage of commission')
     total_comm=fields.Float(string='Total Commission',compute='_compute_comm',store=True)
+    comm_ache=fields.Boolean(string='Check if commision is present',default=False,compute='_compute_comm',store=True)
     comm_input=fields.Float(string='Commission Value to Register') #this field is required to for manual type of commission
-#journal Entry Fields
+    #journal Entry Fields
     journal_entry_id = fields.Many2one('account.move', string="Journal Entry", readonly=True)
 
     #quantity_cal=fields.Boolean(string='Select The calculation type',compute="_compute_comm2")
@@ -85,10 +86,13 @@ class indent_management(models.Model):
             if record.type_comm is not None:
                 if record.type_comm=='quantity':
                     record['total_comm']=record.total_qty*record.base_val
+                    comm_ache=True
                 elif record.type_comm=='percent':
                     record['total_comm']=record.total_amount*(record.percent_comm/100)
+                    comm_ache = True
                 else:
                     record['total_comm']=record.comm_input
+                    comm_ache = True
             #record['total_comm']=record.base_val*(record.percent_comm/100)
 
 
@@ -163,28 +167,37 @@ class indent_management(models.Model):
             else:
                 record.inv_month=''
 
+#------------------------ Journal Entry Button Action -------------------
+
+
     def action_create_journal_entry(self):
         self.ensure_one()
-        if self.env['ir.config_parameter'].sudo().get_param('running_on_odoo_sh'):
-            receivable_code = '123201'
-            income_code = '421001'
-            journal_ref = '	__custom__.indent_journal'
+        for rec in self:
+            if rec.comm_ache is False:
+                raise UserError('please fix the commission amount first')
+    #    if self.env['ir.config_parameter'].sudo().get_param('running_on_odoo_sh'):
+    #        receivable_code = '123201'
+    #        income_code = '421001'
+    #        journal_ref = '__custom__.indent_journal'
 
-        else:
+    #    else:
             # Use default Odoo accounts on localhost
-            receivable_code = '101200'  # Default Accounts Receivable in Odoo Community
-            income_code = '701000'  # Generic Income Account
-            journal_ref = 'account.general_journal'
+    #        receivable_code = '101200'  # Default Accounts Receivable in Odoo Community
+    #        income_code = '701000'  # Generic Income Account
+    #       journal_ref = 'account.general_journal'
 
-        receivable_account = self.env['account.account'].search([('code', '=', receivable_code)], limit=1)
-        income_account = self.env['account.account'].search([('code', '=', income_code)], limit=1)
+        receivable_acc_code='123201'
+        income_acc_code='421001'
+        indent_journal_exid='__custom__.indent_journal'
+        receivable_account = self.env['account.account'].search([('code', '=', receivable_acc_code)], limit=1)
+        income_account = self.env['account.account'].search([('code', '=', income_acc_code)], limit=1)
 
         if not receivable_account or not income_account:
             raise UserError("One or both accounts are missing. Please check your Chart of Accounts.")
 
             # Create the journal entry
             move_vals = {
-                'journal_id': self.env.ref('journal_ref').id,  # Ensure correct journal
+                'journal_id': self.env.ref('__custom__.indent_journal').id,  # Ensure correct journal
                 'date': fields.Date.today(),
                 'ref': f"Commission-{self.purchase_order_id}",
                 'line_ids': [

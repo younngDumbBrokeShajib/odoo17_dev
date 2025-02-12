@@ -184,7 +184,7 @@ class LandedCost(models.Model):
             })
             self.journal_entry_created = 'created' #changing the Journal entry staus from not-created to created
             #if we call this then the entries will be posted.
-            #so to keep the entry as draft stage do not call this
+            #so to keep the entry as draft stage do not call the below method .action.post()
             #journal_entry.action_post()
 
 
