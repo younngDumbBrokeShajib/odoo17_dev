@@ -194,37 +194,41 @@ class indent_management(models.Model):
         #    raise UserError("One or both accounts are missing. Please check your Chart of Accounts.")
 
             # Create the journal entry
-            move_vals = {
-                'journal_id': self.env.ref('__custom__.indent_journal').id,  # Ensure correct journal
-                'date': fields.Date.today(),
-                'ref': f"Commission-{self.purchase_order_id}",
-                'line_ids': [
-                    (0, 0, {
-                        'account_id': receivable_account.id,
-                        'partner_id': self.supplier_id.id,
-                        'debit': self.commission_amount,
-                        'credit': 0.0,
-                        'name': f"Commission Receivable - {self.supplier_id.name}",
+
+        move_vals = {
+
+
+            'journal_id': self.env.ref('__custom__.indent_journal').id,  # Ensure correct journal
+            'date': fields.Date.today(),
+            'ref': f"Commission-{self.purchase_order_id}",
+            'line_ids':[
+
+                (0, 0, {
+                    'account_id': receivable_account.id,
+                    'partner_id': self.supplier_id.id,
+                    'debit': self.commission_amount,
+                    'credit': 0.0,
+                    'name': f"Commission Receivable - {self.supplier_id.name}",
                     }),
-                    (0, 0, {
-                        'account_id': income_account.id,
-                        'partner_id': self.supplier_id.id,
-                        'debit': 0.0,
-                        'credit': self.commission_amount,
-                        'name': f"Commission Income - {self.supplier_id.name}",
+                (0, 0, {
+                    'account_id': income_account.id,
+                    'partner_id': self.supplier_id.id,
+                    'debit': 0.0,
+                    'credit': self.commission_amount,
+                    'name': f"Commission Income - {self.supplier_id.name}",
                     }),
                 ],
             }
 
-            journal_entry = self.env['account.move'].create(move_vals)
-            self.journal_entry_id = journal_entry.id  # Store the created journal entry
+        journal_entry = self.env['account.move'].create(move_vals)
+        self.journal_entry_id = journal_entry.id  # Store the created journal entry
 
-            return {
-                'type': 'ir.actions.act_window',
-                'res_model': 'account.move',
-                'res_id': journal_entry.id,
-                'view_mode': 'form',
-                'target': 'current',
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'account.move',
+            'res_id': journal_entry.id,
+            'view_mode': 'form',
+            'target': 'current',
             }
 
 
